@@ -134,7 +134,8 @@ LearnerClassifRangerHshrink = R6Class("LearnerClassifRangerHshrink",
           oob_pred = apply(preds, 1:2, mean, na.rm = TRUE)
           oob_pred[oob_pred < 0] = 0
 
-          measure$fun(task$truth(), oob_pred)
+          nona = rowSums(is.na(oob_pred)) == 0
+          measure$fun(task$truth()[nona], oob_pred[nona, ])
         })
 
         if (measure$minimize) {
